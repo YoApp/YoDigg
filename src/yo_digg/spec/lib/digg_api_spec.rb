@@ -9,16 +9,26 @@ describe DiggApi, "#should_ping_api?" do
 		@doc = Nokogiri::HTML(File.read(file_location))
 	end
 
-	it "be true if parsing a page with product > 100 votes" do
+	it "be true if parsing a page with digg > 5000 votes" do
 		expect(DiggApi.should_ping_api?(@doc)).to be(true)
 	end
 
-	it "be true if parsing page with 2 prods > 100 votes, and one already stored" do
+	it "be true if parsing a page with digg > 5000 votes and another in db" do
+		Digg.where(content_id: "1mRbwtP").first_or_create!
+
 		expect(DiggApi.should_ping_api?(@doc)).to be(true)
+
+		Digg.delete_all
 	end
 
-	it "be false if parsing page with prod > 100 votes but already in database" do
+	it "be false if parsing a page where all diggs already in database" do
+		# create all Diggs with count over 5000
+		Digg.where(content_id: "1xc6Oub").first_or_create!
+		Digg.where(content_id: "1mRbwtP").first_or_create!
+		Digg.where(content_id: "1ltNBeW").first_or_create!
 
 		expect(DiggApi.should_ping_api?(@doc)).to be(false)
+
+		Digg.delete_all
 	end
 end

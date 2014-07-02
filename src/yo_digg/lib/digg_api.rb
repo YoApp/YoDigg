@@ -28,10 +28,10 @@ class DiggApi
 	# doc - the Nokogiri document
 	def self.should_ping_api?(doc)
 		# get all diggs
-		diggs = doc.css('.story-container')
+		diggs = doc.css('article.story-container')
 
 		diggs.each do |d|
-			if d['data-digg-score'].to_i > NUM_VOTES
+			if d['data-digg-score'].sub(",", "").to_i > NUM_VOTES # b/c if , messes up
 				content_id = d['data-content-id']
 				if Digg.find_by(content_id: content_id).nil?
 					Digg.create!(content_id: content_id)
