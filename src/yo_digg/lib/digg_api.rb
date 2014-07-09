@@ -10,7 +10,7 @@ require 'net/http'
 #     DiggApi.run
 class DiggApi
 
-	NUM_VOTES = 5000 # if diggs > NUM_VOTES, will ping
+	NUM_VOTES = 20000 # if diggs > NUM_VOTES, will ping
 	API_TOKEN = ENV["DIGG_API_TOKEN"]
 	API_ENDPOINT = "http://api.justyo.co/yoall/"
 
